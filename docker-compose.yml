@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-budgetplan
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/fastcgi-php.conf:/etc/nginx/snippets/fastcgi-php.conf
+      - ./src:/var/www/html
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-fpm-budgetplan
+    volumes:
+      - ./src:/var/www/html
